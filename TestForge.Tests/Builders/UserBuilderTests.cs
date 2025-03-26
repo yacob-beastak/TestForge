@@ -70,6 +70,22 @@ public class UserBuilderTests
         Assert.True(string.IsNullOrWhiteSpace(user.LastName));
     }
 
+    [Fact]
+    public void Build_WithValidateTrue_ShouldThrowForInvalidUser()
+    {
+        var builder = UserBuilder.Create()
+            .WithEmptyName()
+            .WithInvalidEmail()
+            .WithAgeBelow(0);
+
+        var exception = Assert.Throws<InvalidOperationException>(() =>
+            builder.Build(validate: true)
+        );
+
+        Assert.Contains("first name", exception.Message.ToLower()); // alebo "email"/"age"
+    }
+
+
 
 
 }

@@ -81,4 +81,20 @@ public class OrderBuilderTests
         Assert.Null(order.Customer);
     }
 
+    [Fact]
+    public void Build_WithValidateTrue_ShouldThrowForInvalidOrder()
+    {
+        var builder = OrderBuilder.Create()
+            .WithoutCustomer()
+            .WithNegativeTotal()
+            .WithFutureDate();
+
+        var exception = Assert.Throws<InvalidOperationException>(() =>
+            builder.Build(validate: true)
+        );
+
+        Assert.Contains("customer", exception.Message.ToLower()); // basic check
+    }
+
+
 }

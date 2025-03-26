@@ -86,8 +86,20 @@ public class OrderBuilder
     }
 
     // ---------- BUILD ----------
-    public Order Build()
+    public Order Build(bool validate = false)
     {
+        if (validate)
+        {
+            if (_order.Customer == null)
+                throw new InvalidOperationException("Order must have a customer.");
+
+            if (_order.TotalPrice < 0)
+                throw new InvalidOperationException("Total price cannot be negative.");
+
+            if (_order.CreatedAt > DateTime.UtcNow)
+                throw new InvalidOperationException("Order date cannot be in the future.");
+        }
+
         return _order;
     }
 }

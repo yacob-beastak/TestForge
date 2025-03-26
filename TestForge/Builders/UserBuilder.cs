@@ -77,8 +77,20 @@ public class UserBuilder
     }
 
     // ---------- BUILD ----------
-    public User Build()
+    public User Build(bool validate = false)
     {
+        if (validate)
+        {
+            if (string.IsNullOrWhiteSpace(_user.FirstName))
+                throw new InvalidOperationException("First name is required.");
+
+            if (string.IsNullOrWhiteSpace(_user.Email) || !_user.Email.Contains("@"))
+                throw new InvalidOperationException("Email must be valid.");
+
+            if (_user.Age < 0)
+                throw new InvalidOperationException("Age cannot be negative.");
+        }
+
         return _user;
     }
 }
