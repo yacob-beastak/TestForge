@@ -67,3 +67,31 @@ var randomOrder = OrderBuilder.Random();
 
 Console.WriteLine($"Random Address: {randomAddress.Street}, {randomAddress.Country}");
 Console.WriteLine($"Random Order: {randomOrder.TotalPrice:F2}€, Status: {randomOrder.Status}");
+
+
+Console.WriteLine("\n=== Valid Product ===");
+var product = ProductBuilder.Create()
+    .WithName("All-Mountain Snowboard")
+    .WithPrice(199.99m)
+    .WithStock(25)
+    .Build(validate: true);
+
+Console.WriteLine($"Product: {product.Name}, Price: {product.Price:F2} €, Stock: {product.Stock}, Available: {product.IsAvailable}");
+
+Console.WriteLine("\n=== Invalid Product (throws on validate) ===");
+try
+{
+    var invalidProduct = ProductBuilder.Create()
+        .WithName("")
+        .WithPrice(-15)
+        .WithStock(-2)
+        .Build(validate: true);
+}
+catch (Exception ex)
+{
+    Console.WriteLine($"[ERROR] {ex.Message}");
+}
+
+Console.WriteLine("\n=== Random Product ===");
+var randomProduct = ProductBuilder.Random();
+Console.WriteLine($"Random Product: {randomProduct.Name}, Price: {randomProduct.Price:F2} €, Stock: {randomProduct.Stock}");
